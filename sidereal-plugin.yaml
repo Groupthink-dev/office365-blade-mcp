@@ -1,0 +1,88 @@
+name: office365-blade-mcp
+version: "0.1.0"
+description: "Microsoft 365 operations via Graph API — email, calendar, tasks (To Do + Planner)"
+author: piersdd
+licence: MIT
+tier: certified
+homepage: https://github.com/groupthink-dev/office365-blade-mcp
+contracts:
+  - email-v1
+  - calendar-v1
+  - tasks-v1
+
+services:
+  email:
+    search: email_search
+    read: email_read
+    mailboxes: email_folders
+    snippets: email_snippets
+    threads: email_thread
+    state: email_state
+    changes: email_changes
+    bulk: email_bulk
+    send: email_send
+    reply: email_reply
+    flag: email_flag
+    move: email_move
+    delete: email_delete
+  calendar:
+    events: cal_events
+    event: cal_event
+    search: cal_search
+    calendars: cal_calendars
+    freebusy: cal_freebusy
+    today: cal_today
+    week: cal_week
+    batch: cal_batch
+    create: cal_create
+    update: cal_update
+    delete: cal_delete
+  tasks:
+    list: task_list
+    search: task_search
+    projects: task_lists
+    today: task_today
+    inbox: task_inbox
+    create: task_create
+    update: task_update
+    complete: task_complete
+
+install:
+  runtime: uv
+  package: office365-blade-mcp
+  command: office365-blade-mcp
+
+env:
+  - name: O365_TENANT_ID
+    description: "Azure AD tenant ID"
+    secret: false
+  - name: O365_CLIENT_ID
+    description: "Azure AD app client ID"
+    secret: true
+  - name: O365_CLIENT_SECRET
+    description: "Azure AD app client secret (optional — for client_credentials flow)"
+    secret: true
+  - name: O365_AUTH_MODE
+    description: "Auth mode: device_code (interactive) or client_credentials (headless)"
+    default: "device_code"
+  - name: O365_WRITE_ENABLED
+    description: "Enable write operations (send, reply, create, update, delete)"
+    default: "false"
+
+requires:
+  sidereal: ">=0.3.0"
+
+conformance:
+  email-v1:
+    required: "3/3"
+    recommended: "2/2"
+    optional: "3/3"
+  calendar-v1:
+    required: "4/4"
+    recommended: "3/3"
+    optional: "1/1"
+  tasks-v1:
+    required: "3/3"
+    recommended: "2/4"
+    optional: "0/1"
+  last_tested: "2026-03-31"
