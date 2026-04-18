@@ -1,7 +1,7 @@
 name: office365-blade-mcp
 version: "0.1.0"
 description: "Microsoft 365 operations via Graph API — email, calendar, tasks (To Do + Planner)"
-author: piersdd
+author: groupthink-dev
 licence: MIT
 tier: certified
 homepage: https://github.com/groupthink-dev/office365-blade-mcp
@@ -70,19 +70,22 @@ env:
     default: "false"
 
 requires:
-  sidereal: ">=0.3.0"
+  stallari: ">=0.60"
 
 conformance:
   email-v1:
     required: "3/3"
     recommended: "2/2"
     optional: "3/3"
+    gated: "3/3"
   calendar-v1:
     required: "4/4"
     recommended: "3/3"
     optional: "1/1"
+    gated: "3/3"
   tasks-v1:
     required: "3/3"
     recommended: "2/4"
     optional: "0/1"
-  last_tested: "2026-03-31"
+    gated: "3/3"
+  last_tested: "2026-04-18"
