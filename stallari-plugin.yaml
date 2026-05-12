@@ -72,6 +72,10 @@ env:
 requires:
   stallari: ">=0.60"
 
+  adapter_contracts:
+    - "email >= 1.0"
+    - "calendar >= 1.0"
+    - "tasks >= 1.0"
 conformance:
   email-v1:
     required: "3/3"
