@@ -232,6 +232,17 @@ class TestCalCreate:
             result = await cal_create(subject="Test", start="2026-03-08T10:00:00", end="2026-03-08T11:00:00")
             assert "Write operations are disabled" in result
 
+    async def test_success_returns_full_id(self, mock_client):
+        from office365_blade_mcp.server import cal_create
+
+        event_id = "AAMkAGNhbGVuZGFyLWV2ZW50LWZ1bGwtbGVuZ3RoLW9wYXF1ZS1pZA"
+        with patch.dict("os.environ", {"O365_WRITE_ENABLED": "true"}):
+            mock_client.create_event.return_value = {"id": event_id}
+            result = await cal_create(subject="Test", start="2026-03-08T10:00:00", end="2026-03-08T11:00:00")
+
+        assert f"id={event_id}" in result
+        assert f"id={event_id}..." not in result
+
 
 class TestCalDelete:
     async def test_requires_confirm(self, mock_client):
@@ -293,6 +304,17 @@ class TestTaskCreate:
             mock_client.create_task.return_value = {"id": "task-new", "title": "Test task"}
             result = await task_create(list_id="tl-default", title="Test task")
             assert "Created task" in result
+
+    async def test_success_returns_full_id(self, mock_client):
+        from office365_blade_mcp.server import task_create
+
+        task_id = "AAMkAHRhc2stZnVsbC1sZW5ndGgtb3BhcXVlLWlkLXRoYXQtbXVzdC1yb3VuZC10cmlw"
+        with patch.dict("os.environ", {"O365_WRITE_ENABLED": "true"}):
+            mock_client.create_task.return_value = {"id": task_id, "title": "Test task"}
+            result = await task_create(list_id="tl-default", title="Test task")
+
+        assert f"id={task_id}" in result
+        assert f"id={task_id}..." not in result
 
 
 class TestTaskComplete:

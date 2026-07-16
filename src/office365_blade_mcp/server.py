@@ -664,7 +664,7 @@ async def cal_create(
             _get_client().create_event, subject, start, end, body, location, attendee_list, is_all_day, calendar_id
         )
         eid = event.get("id", "?")
-        return f"Created event: {subject} (id={eid[:20]}...)"
+        return f"Created event: {subject} (id={eid})"
     except GraphError as e:
         return _error_response(e)
     except Exception as e:
@@ -700,7 +700,7 @@ async def cal_update(
             return "Error: No fields to update."
         logger.info("cal_update: id=%s", id[:20])
         await _run(_get_client().update_event, id, updates)
-        return f"Updated event: id={id[:20]}..."
+        return f"Updated event: id={id}"
     except GraphError as e:
         return _error_response(e)
     except Exception as e:
@@ -845,7 +845,7 @@ async def task_create(
         logger.info("task_create: %s in %s", title, list_id[:20])
         task = await _run(_get_client().create_task, list_id, title, body, due_date, importance)
         tid = task.get("id", "?")
-        return f"Created task: {title} (id={tid[:20]}...)"
+        return f"Created task: {title} (id={tid})"
     except GraphError as e:
         return _error_response(e)
     except Exception as e:
@@ -879,7 +879,7 @@ async def task_update(
             return "Error: No fields to update."
         logger.info("task_update: %s", task_id[:20])
         await _run(_get_client().update_task, list_id, task_id, updates)
-        return f"Updated task: id={task_id[:20]}..."
+        return f"Updated task: id={task_id}"
     except GraphError as e:
         return _error_response(e)
     except Exception as e:
@@ -898,7 +898,7 @@ async def task_complete(
     try:
         logger.info("task_complete: %s", task_id[:20])
         await _run(_get_client().complete_task, list_id, task_id)
-        return f"Completed task: id={task_id[:20]}..."
+        return f"Completed task: id={task_id}"
     except GraphError as e:
         return _error_response(e)
     except Exception as e:
