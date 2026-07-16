@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
+import pytest
+
 from office365_blade_mcp.formatters import (
+    format_attachments,
     format_calendar_list,
     format_email_body,
+    format_email_changes,
     format_email_list,
     format_email_snippets,
     format_email_thread,
@@ -12,9 +16,44 @@ from office365_blade_mcp.formatters import (
     format_event_list,
     format_folder_list,
     format_freebusy,
+    format_planner_plans,
+    format_planner_tasks,
     format_task_list_items,
     format_task_lists,
 )
+
+FULL_GRAPH_ID = "AAMkAGI2THJkLWZ1bGwtbGVuZ3RoLW9wYXF1ZS1pZC10aGF0LW11c3Qtcm91bmQtdHJpcA"
+
+
+@pytest.mark.parametrize(
+    ("formatter", "value"),
+    [
+        (format_email_list, [{"id": FULL_GRAPH_ID}]),
+        (format_email_snippets, [{"id": FULL_GRAPH_ID}]),
+        (format_email_changes, {"changes": [{"id": FULL_GRAPH_ID}], "count": 1}),
+        (format_attachments, [{"id": FULL_GRAPH_ID}]),
+        (format_calendar_list, [{"id": FULL_GRAPH_ID}]),
+        (format_event_list, [{"id": FULL_GRAPH_ID}]),
+        (format_task_lists, [{"id": FULL_GRAPH_ID}]),
+        (format_task_list_items, [{"id": FULL_GRAPH_ID}]),
+        (format_planner_plans, [{"id": FULL_GRAPH_ID}]),
+        (format_planner_tasks, [{"id": FULL_GRAPH_ID}]),
+    ],
+)
+def test_list_formatter_emits_round_trippable_full_id(formatter, value):
+    result = formatter(value)
+
+    emitted_id = result.split("id=", 1)[1].splitlines()[0]
+    assert emitted_id == FULL_GRAPH_ID
+    assert f"id={FULL_GRAPH_ID}..." not in result
+
+
+def test_email_changes_emits_full_id_for_removed_item():
+    result = format_email_changes({"changes": [{"id": FULL_GRAPH_ID, "@removed": {"reason": "deleted"}}], "count": 1})
+
+    assert f"id={FULL_GRAPH_ID}" in result
+    assert f"id={FULL_GRAPH_ID}..." not in result
+
 
 # ===========================================================================
 # EMAIL FORMATTERS

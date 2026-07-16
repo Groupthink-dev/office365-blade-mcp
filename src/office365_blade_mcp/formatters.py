@@ -93,7 +93,7 @@ def format_email_list(emails: list[dict[str, Any]], total: int | None = None, li
         # ID
         mid = msg.get("id", "")
         if mid:
-            parts.append(f"id={mid[:20]}...")
+            parts.append(f"id={mid}")
 
         lines.append(" | ".join(parts))
 
@@ -194,7 +194,7 @@ def format_email_snippets(
         from_info = msg.get("from", {}).get("emailAddress", {})
         header.append(from_info.get("name") or from_info.get("address") or "?")
         header.append(msg.get("subject", "(no subject)"))
-        header.append(f"id={msg.get('id', '?')[:20]}...")
+        header.append(f"id={msg.get('id', '?')}")
 
         parts.append(" | ".join(header))
         preview = msg.get("bodyPreview", "")
@@ -260,9 +260,9 @@ def format_email_changes(changes: dict[str, Any]) -> str:
     for item in items[:20]:
         reason = item.get("@removed", {}).get("reason", "")
         if reason:
-            lines.append(f"  Removed ({reason}): id={item.get('id', '?')[:20]}...")
+            lines.append(f"  Removed ({reason}): id={item.get('id', '?')}")
         else:
-            lines.append(f"  Changed: id={item.get('id', '?')[:20]}...")
+            lines.append(f"  Changed: id={item.get('id', '?')}")
 
     if count > 20:
         lines.append(f"  ... {count - 20} more")
@@ -281,7 +281,7 @@ def format_attachments(attachments: list[dict[str, Any]]) -> str:
         content_type = att.get("contentType", "?")
         size = att.get("size", 0)
         aid = att.get("id", "?")
-        lines.append(f"{name} | {content_type} | {_human_size(size)} | id={aid[:20]}...")
+        lines.append(f"{name} | {content_type} | {_human_size(size)} | id={aid}")
     return "\n".join(lines)
 
 
@@ -311,7 +311,7 @@ def format_calendar_list(calendars: list[dict[str, Any]]) -> str:
             tags.append("editable")
         tag_str = f" ({', '.join(tags)})" if tags else ""
         cid = cal.get("id", "?")
-        lines.append(f"{name}{tag_str} id={cid[:20]}...")
+        lines.append(f"{name}{tag_str} id={cid}")
     return "\n".join(lines)
 
 
@@ -361,7 +361,7 @@ def format_event_list(events: list[dict[str, Any]]) -> str:
         # ID
         eid = event.get("id", "")
         if eid:
-            parts.append(f"id={eid[:20]}...")
+            parts.append(f"id={eid}")
 
         lines.append(" | ".join(parts))
 
@@ -485,7 +485,7 @@ def format_task_lists(lists: list[dict[str, Any]]) -> str:
             tags.append("shared")
         tag_str = f" ({', '.join(tags)})" if tags else ""
         tid = tl.get("id", "?")
-        lines.append(f"{name}{tag_str} id={tid[:20]}...")
+        lines.append(f"{name}{tag_str} id={tid}")
     return "\n".join(lines)
 
 
@@ -535,7 +535,7 @@ def format_task_list_items(tasks: list[dict[str, Any]]) -> str:
         # ID
         tid = task.get("id", "")
         if tid:
-            parts.append(f"id={tid[:20]}...")
+            parts.append(f"id={tid}")
 
         lines.append(" | ".join(parts))
 
@@ -551,7 +551,7 @@ def format_planner_plans(plans: list[dict[str, Any]]) -> str:
     for plan in plans:
         title = plan.get("title", "?")
         pid = plan.get("id", "?")
-        lines.append(f"{title} id={pid[:20]}...")
+        lines.append(f"{title} id={pid}")
     return "\n".join(lines)
 
 
@@ -582,7 +582,7 @@ def format_planner_tasks(tasks: list[dict[str, Any]]) -> str:
 
         tid = task.get("id", "")
         if tid:
-            parts.append(f"id={tid[:20]}...")
+            parts.append(f"id={tid}")
 
         lines.append(" | ".join(parts))
 
